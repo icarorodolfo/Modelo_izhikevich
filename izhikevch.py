@@ -31,7 +31,7 @@ def Modelo(a,b,u,v,I):
 ##Codigo principal
 def Izhikevich(a,b,c,d):
     v=-65*np.ones(len(t)) # valor inicial do potencial da membrana
-    u=0*np.ones(len(t)) # variavel de restituicao
+    u=np.zeros(len(t)) # variavel de restituicao
     u[0]=b*v[0] # valor inical da variavel de restituicao
     I=entrada(TI,AC)
     
