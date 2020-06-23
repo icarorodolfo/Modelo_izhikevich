@@ -1,10 +1,13 @@
 ###Icaro Rodolfo S. C. Paz
 ###MODELO IZHIKEVCH SIMPLES
 
-##Bibliotecas
-import pylab as plt
-import numpy as np
+## codificacao ASCII
+# coding=UTF8
 
+##Bibliotecas
+import matplotlib.pyplot as plt
+import numpy as np
+from IPython.display import set_matplotlib_formats
 
 ##INSERCAO DE DADOS
 h=0.5 #largura do passo
@@ -22,7 +25,7 @@ def entrada(TI,AC):
     return I
 
 
-###Solucao Numerica
+###Solucao numerica
 def Modelo(a,b,u,v,I):
     v = v + h*(0.04*v*v+5*v+140-u+I) # potencial discreto da membrana do neuronio
     u = u + h*(a*(b*v-u)) # variavel de restituicao
@@ -47,25 +50,38 @@ def Izhikevich(a,b,c,d):
 #Resultados do codigo
 def plot_entrada_saida(t,v,I,a,b,c,d):
 ##Plotando
-    fig, ax1 = plt.subplots(figsize=(12,3))
-    ax1.plot(t, v, 'b-',label='Saida')
+    fig, ax1 = plt.subplots(figsize=(9,4))
+    ax1.plot(t, v, 'k-',label='Saida')
     ax1.set_xlabel('tempo (ms)')
+
+    plt.text(0.5,0.5, 'a: %s \nb: %s \nc: %s \nd: %s' %(a,b,c,d), fontsize=13, color='black',bbox=dict(boxstyle='round', facecolor='wheat',alpha=0.5)) #caixa de texto
     
     #plotando saida
-    ax1.set_ylabel('Saida mV', color='b')
-    ax1.tick_params('y', color='b')
+    ax1.set_ylabel('Potencial de membrana (mV)')
+    ax1.tick_params('y', color='k')
     ax1.set_ylim(-95,40)
     ax2 = ax1.twinx()
 
     #plotando entrada em eixos diferentes
-    ax2.plot(t,I,'r',label='Entrada')
+    ax2.plot(t,I,'orangered',label='Entrada')
     ax2.set_ylim(0,AC*20)
-    ax2.set_ylabel('Entrada (mV)', color='r')
-    ax2.tick_params('y', colors='r')
+    ax2.set_ylabel('Estímulo (mV)', color='orangered')
+    ax2.tick_params('y', colors='orangered')
     fig.tight_layout()
-    ax1.legend(loc=1)
-    ax2.legend(loc=3)
-    ax1.set_title('Parametros a: %s b: %s c: %s d: %s' %(a,b,c,d))
+    ax1.set_title('Spiking Regular (RS)')
+
+    #resolucao, formato e armazenamento do grafico
+    set_matplotlib_formats('pdf', 'png')
+    plt.rcParams['savefig.dpi'] = 300
+    #plt.savefig('RS.png')
+    
+    #exibicao
     plt.show()
 
-Izhikevich(0.02,0.2,-65,8)
+Izhikevich(0.02,0.2,-65,8) #RS
+#Izhikevich(0.02,0.2,-55,4) #IB
+#Izhikevich(0.02,0.2,-50,2) #CH
+#Izhikevich(0.02,0.25,-65,0.05) #TC
+#Izhikevich(0.02,0.25,-65,2) #LTS
+#Izhikevich(0.1,0.2,-65,2) #FS
+#Izhikevich(0.1,0.26,-65,2) #RZ
